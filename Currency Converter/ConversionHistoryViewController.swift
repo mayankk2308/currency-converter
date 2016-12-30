@@ -13,7 +13,7 @@ class ConversionHistoryViewController: UITableViewController {
     
     @IBOutlet var tempView: UIView!
     var appDel: AppDelegate  {
-        return UIApplication.sharedApplication().delegate as! AppDelegate
+        return UIApplication.shared.delegate as! AppDelegate
     }
     
     var sharedContext: NSManagedObjectContext {
@@ -22,7 +22,7 @@ class ConversionHistoryViewController: UITableViewController {
     
     var fetchedConversions: [Conversion]!
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         fetchedConversions = fetchAllConversions()
         if fetchedConversions.count == 0 {
             self.tableView.tableFooterView = tempView
@@ -33,33 +33,33 @@ class ConversionHistoryViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let cell = sender as! ConversionCell
-        let controller = segue.destinationViewController as! ConversionDetailViewController
+        let controller = segue.destination as! ConversionDetailViewController
         controller.usdVal = cell.usdValue.text!
         controller.initialText = cell.associations.text!
         controller.context = sharedContext
-        controller.managedObject = fetchedConversions[(tableView.indexPathForCell(cell)?.row)!]
+        controller.managedObject = fetchedConversions[(tableView.indexPath(for: cell)?.row)!]
     }
     
     func fetchAllConversions() -> [Conversion]! {
-        let request = NSFetchRequest(entityName: "Conversion")
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Conversion")
         var results: [Conversion]!
         do {
-            results = try sharedContext.executeFetchRequest(request) as! [Conversion]
+            results = try sharedContext.fetch(request) as! [Conversion]
         } catch {
             results = nil
         }
         return results
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell") as! ConversionCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! ConversionCell
         configureCell(cell, indexPath: indexPath)
         return cell
     }
     
-    func configureCell(cell: ConversionCell, indexPath: NSIndexPath) {
+    func configureCell(_ cell: ConversionCell, indexPath: IndexPath) {
         cell.usdValue.text = "\(fetchedConversions[indexPath.row].baseValue)"
         cell.euroLabel.text = "\(fetchedConversions[indexPath.row].eurValue)"
         cell.poundLabel.text = "\(fetchedConversions[indexPath.row].gbpValue)"
@@ -71,14 +71,14 @@ class ConversionHistoryViewController: UITableViewController {
         cell.associations.text = association
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if fetchedConversions == nil {
             return 0
         }
         return fetchedConversions.count
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

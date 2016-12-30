@@ -16,7 +16,6 @@
 		A81DF52F1B678A5900CC656B /* Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81DF52E1B678A5900CC656B /* Conversion.swift */; };
 		A81DF5311B678B7D00CC656B /* CurrencyLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81DF5301B678B7D00CC656B /* CurrencyLayer.swift */; };
 		A88B421F1B69006300DEFEAE /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88B421E1B69006300DEFEAE /* Reachability.swift */; };
-		A8B3A5E41B6A19DB00C9646A /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A81DF50A1B67891200CC656B /* Info.plist */; };
 		A8EF6B4D1B6930C0004A724D /* AssociationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8EF6B4C1B6930C0004A724D /* AssociationViewController.swift */; };
 		A8EF6B4F1B693CFA004A724D /* ConversionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8EF6B4E1B693CFA004A724D /* ConversionCell.swift */; };
 		A8EF6B511B69446E004A724D /* ConversionHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8EF6B501B69446E004A724D /* ConversionHistoryViewController.swift */; };
@@ -141,12 +140,13 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Mayank Kumar";
 				TargetAttributes = {
 					A81DF5051B67891200CC656B = {
 						CreatedOnToolsVersion = 6.4;
 						DevelopmentTeam = 4UG8R4GV8Q;
+						LastSwiftMigration = 0820;
 					};
 				};
 			};
@@ -173,7 +173,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A8B3A5E41B6A19DB00C9646A /* Info.plist in Resources */,
 				A81DF5141B67891200CC656B /* Main.storyboard in Resources */,
 				A81DF5191B67891200CC656B /* LaunchScreen.xib in Resources */,
 				A81DF5161B67891200CC656B /* Images.xcassets in Resources */,
@@ -235,8 +234,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -280,8 +281,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -300,6 +303,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -313,6 +317,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mayank.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -325,6 +330,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mayank.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

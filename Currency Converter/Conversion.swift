@@ -19,14 +19,14 @@ class Conversion: NSManagedObject {
     @NSManaged var gbpValue: NSNumber
     @NSManaged var inrValue: NSNumber
     
-    override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
+    override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertInto: context)
     }
     
     init(dictionary: [String:AnyObject], context: NSManagedObjectContext) {
         
-        let entity = NSEntityDescription.entityForName("Conversion", inManagedObjectContext: context)!
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
+        let entity = NSEntityDescription.entity(forEntityName: "Conversion", in: context)!
+        super.init(entity: entity, insertInto: context)
         
         association = dictionary["association"] as! String
         baseValue = dictionary["baseVal"] as! NSNumber

@@ -18,13 +18,13 @@ class ConversionDetailViewController: UIViewController, UITextFieldDelegate {
     var usdVal: String!
     var initialText: String!
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         editField.delegate = self
         usdValue.text = usdVal
         editField.text = initialText
     }
     
-    @IBAction func saveChanges(sender: UIButton) {
+    @IBAction func saveChanges(_ sender: UIButton) {
         var saveText = editField.text
         if editField.text == "" {
             saveText = "0"
@@ -34,23 +34,23 @@ class ConversionDetailViewController: UIViewController, UITextFieldDelegate {
             try context.save()
         } catch _ {
         }
-        self.navigationController?.popViewControllerAnimated(true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func cancelChanges(sender: UIButton) {
-        self.navigationController?.popViewControllerAnimated(true)
+    @IBAction func cancelChanges(_ sender: UIButton) {
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func deleteConversion(sender: UIButton) {
-        context.deleteObject(managedObject)
+    @IBAction func deleteConversion(_ sender: UIButton) {
+        context.delete(managedObject)
         do {
             try context.save()
         } catch _ {
         }
-        self.navigationController?.popViewControllerAnimated(true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
         return true
     }

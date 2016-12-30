@@ -20,20 +20,20 @@ class ConversionViewController: UIViewController {
     var decimalDisabled = false
     var enableConversion = false
     var defaults = {
-       return NSUserDefaults.standardUserDefaults()
+       return UserDefaults.standard
     }()
     
     
     override func viewDidLoad() {
         makeCurrencyQuoteRequest()
         activityindicator.startAnimating()
-        refresh.enabled = false
+        refresh.isEnabled = false
     }
     
-    func displayAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Cancel, handler: nil))
-        self.presentViewController(alert, animated: true, completion: nil)
+    func displayAlert(_ title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     func makeCurrencyQuoteRequest() {
@@ -42,9 +42,9 @@ class ConversionViewController: UIViewController {
                 self.quotes = newQuotes
                 
                 self.removeAllKeysForUserDefaults()
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     self.stopActivityIndicator()
-                    self.refresh.enabled = true
+                    self.refresh.isEnabled = true
                 }
                 
                 //Persist quotes using NSUserDefaults
@@ -53,15 +53,15 @@ class ConversionViewController: UIViewController {
                 self.saveQuotesToUserDefaults(self.quotes["USDINR"] as! Float, key: "INR")
             }
             else {
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     self.displayAlert("Unable to Retrieve Latest Conversion Rates", message: "\(error) Until then, last used conversion rates apply if available, or else conversion rates will default to rates on July 27, 2015.")
                     self.stopActivityIndicator()
-                    self.refresh.enabled = true
+                    self.refresh.isEnabled = true
                 }
                 self.quotes = [
-                    "USDEUR": self.accessQuotesFromUserDefaults("EUR"),
-                    "USDGBP": self.accessQuotesFromUserDefaults("GBP"),
-                    "USDINR": self.accessQuotesFromUserDefaults("INR")
+                    "USDEUR": self.accessQuotesFromUserDefaults("EUR") as AnyObject,
+                    "USDGBP": self.accessQuotesFromUserDefaults("GBP") as AnyObject,
+                    "USDINR": self.accessQuotesFromUserDefaults("INR") as AnyObject
                 ]
             }
             self.enableConversion = true
@@ -70,21 +70,21 @@ class ConversionViewController: UIViewController {
     
     func stopActivityIndicator() {
         self.activityindicator.stopAnimating()
-        self.activityindicator.hidden = true
+        self.activityindicator.isHidden = true
     }
     
-    func saveQuotesToUserDefaults(value: Float, key: String) {
-        defaults.setFloat(value, forKey: key)
+    func saveQuotesToUserDefaults(_ value: Float, key: String) {
+        defaults.set(value, forKey: key)
     }
     
     func removeAllKeysForUserDefaults() {
-        defaults.removeObjectForKey("EUR")
-        defaults.removeObjectForKey("GBP")
-        defaults.removeObjectForKey("INR")
+        defaults.removeObject(forKey: "EUR")
+        defaults.removeObject(forKey: "GBP")
+        defaults.removeObject(forKey: "INR")
     }
     
-    func accessQuotesFromUserDefaults(key: String) -> Float {
-        let quote = defaults.floatForKey(key)
+    func accessQuotesFromUserDefaults(_ key: String) -> Float {
+        let quote = defaults.float(forKey: key)
         if quote != 0 {
             return quote
         }
@@ -101,7 +101,7 @@ class ConversionViewController: UIViewController {
         }
     }
     
-    @IBAction func appendDigit(sender: UIButton) {
+    @IBAction func appendDigit(_ sender: UIButton) {
         if enableConversion {
             if usdInputLabel.text == "0" {
                 usdInputLabel.text = sender.titleLabel!.text!
@@ -119,7 +119,7 @@ class ConversionViewController: UIViewController {
         }
     }
     
-    @IBAction func disableDecimalOnFirstUse(sender: UIButton) {
+    @IBAction func disableDecimalOnFirstUse(_ sender: UIButton) {
         if !decimalDisabled {
             decimalDisabled = true
             appendDigit(sender)
@@ -129,7 +129,7 @@ class ConversionViewController: UIViewController {
         }
     }
     
-    @IBAction func allClear(sender: UIButton) {
+    @IBAction func allClear(_ sender: UIButton) {
         if enableConversion {
             usdInputLabel.text = "0"
             decimalDisabled = false
@@ -137,7 +137,7 @@ class ConversionViewController: UIViewController {
         }
     }
     
-    @IBAction func deleteValue(sender: UIButton) {
+    @IBAction func deleteValue(_ sender: UIButton) {
         if enableConversion {
             if (usdInputLabel.text!).characters.count == 1 {
                 allClear(sender)
@@ -148,8 +148,8 @@ class ConversionViewController: UIViewController {
                 displayAlert("Unable to Delete", message: "There is nothing to delete.")
             }
             else {
-                let index = usdInputLabel.text?.endIndex.predecessor()
-                let lastChar = usdInputLabel.text!.removeAtIndex(index!)
+                let index = usdInputLabel.text?.characters.index(before: (usdInputLabel.text?.endIndex)!)
+                let lastChar = usdInputLabel.text!.remove(at: index!)
                 if lastChar == "." {
                     decimalDisabled = false
                 }
@@ -163,28 +163,28 @@ class ConversionViewController: UIViewController {
         
     
     
-    @IBAction func saveConversion(sender: UIButton) {
+    @IBAction func saveConversion(_ sender: UIButton) {
         if usdInputLabel.text != "0" {
-            let controller = storyboard?.instantiateViewControllerWithIdentifier("AssociationView") as! AssociationViewController
+            let controller = storyboard?.instantiateViewController(withIdentifier: "AssociationView") as! AssociationViewController
             controller.baseVal = convertStringToFloat(usdInputLabel.text!)
             controller.eurVal = convertStringToFloat(eurOutputLabel.text!)
             controller.gbpVal = convertStringToFloat(gbpOutputLabel.text!)
             controller.inrVal = convertStringToFloat(inrOutputLabel.text!)
-            self.presentViewController(controller, animated: true, completion: nil)
+            self.present(controller, animated: true, completion: nil)
         }
         else {
             displayAlert("No Conversion Made", message: "You cannot save because you have not made a conversion.")
         }
     }
     
-    @IBAction func refreshRates(sender: UIButton) {
+    @IBAction func refreshRates(_ sender: UIButton) {
         makeCurrencyQuoteRequest()
-        activityindicator.hidden = false
+        activityindicator.isHidden = false
         activityindicator.startAnimating()
-        refresh.enabled = false
+        refresh.isEnabled = false
     }
     
-    func convertStringToFloat(string: String) -> Float {
+    func convertStringToFloat(_ string: String) -> Float {
         return (string as NSString).floatValue
     }
     

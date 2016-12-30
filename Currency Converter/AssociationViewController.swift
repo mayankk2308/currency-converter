@@ -17,7 +17,7 @@ class AssociationViewController: UIViewController, UITextFieldDelegate {
     var inrVal: Float!
     var association: String!
     var appDel: AppDelegate  {
-       return UIApplication.sharedApplication().delegate as! AppDelegate
+       return UIApplication.shared.delegate as! AppDelegate
     }
     
     var sharedContext: NSManagedObjectContext {
@@ -30,7 +30,7 @@ class AssociationViewController: UIViewController, UITextFieldDelegate {
         associationField.delegate = self
     }
     
-    @IBAction func saveConversion(sender: UIButton) {
+    @IBAction func saveConversion(_ sender: UIButton) {
         association = associationField.text
         if association == "" {
             association = "0"
@@ -41,18 +41,18 @@ class AssociationViewController: UIViewController, UITextFieldDelegate {
             "gbpVal": gbpVal,
             "inrVal": inrVal,
             "association": association
-        ]
-        _ = Conversion(dictionary: dictionary as! [String : AnyObject], context: sharedContext)
+        ] as [String : Any]
+        _ = Conversion(dictionary: dictionary as [String : AnyObject], context: sharedContext)
         appDel.saveContext()
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     
-    @IBAction func cancelSave(sender: UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancelSave(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
         return true
     }
