@@ -54,7 +54,7 @@ class ConversionViewController: UIViewController {
             }
             else {
                 DispatchQueue.main.async {
-                    self.displayAlert("Unable to Retrieve Latest Conversion Rates", message: "\(error) Until then, last used conversion rates apply if available, or else conversion rates will default to rates on July 27, 2015.")
+                    self.displayAlert("Unable to Retrieve Latest Conversion Rates", message: "\(error!) Until then, last used conversion rates apply if available, or else conversion rates will default to rates on July 27, 2015.")
                     self.stopActivityIndicator()
                     self.refresh.isEnabled = true
                 }
@@ -139,7 +139,7 @@ class ConversionViewController: UIViewController {
     
     @IBAction func deleteValue(_ sender: UIButton) {
         if enableConversion {
-            if (usdInputLabel.text!).characters.count == 1 {
+            if (usdInputLabel.text!).count == 1 {
                 allClear(sender)
                 decimalDisabled = false
                 return
@@ -148,7 +148,7 @@ class ConversionViewController: UIViewController {
                 displayAlert("Unable to Delete", message: "There is nothing to delete.")
             }
             else {
-                let index = usdInputLabel.text?.characters.index(before: (usdInputLabel.text?.endIndex)!)
+                let index = usdInputLabel.text?.index(before: (usdInputLabel.text?.endIndex)!)
                 let lastChar = usdInputLabel.text!.remove(at: index!)
                 if lastChar == "." {
                     decimalDisabled = false
